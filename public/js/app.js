@@ -52388,7 +52388,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var _this = this;
 
-    var uri = '/api/posts';
+    var uri = '/posts';
     this.axios.get(uri).then(function (response) {
       _this.posts = response.data.data;
     });
@@ -52398,7 +52398,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     deletePost: function deletePost(id) {
       var _this2 = this;
 
-      var uri = '/api/post/delete/' + id;
+      var uri = '/post/delete/' + id;
       this.axios.delete(uri).then(function (response) {
         _this2.posts.splice(_this2.posts.indexOf(id), 1);
       });
@@ -52604,7 +52604,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   created: function created() {
     var _this = this;
 
-    var uri = '/api/post/edit/' + this.$route.params.id;
+    var uri = '/post/edit/' + this.$route.params.id;
     this.axios.get(uri).then(function (response) {
       _this.post = response.data;
     });
@@ -52614,7 +52614,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     updatePost: function updatePost() {
       var _this2 = this;
 
-      var uri = '/api/post/update/' + this.$route.params.id;
+      var uri = '/post/update/' + this.$route.params.id;
       this.axios.post(uri, this.post).then(function (response) {
         _this2.$router.push({ name: 'posts' });
       });
