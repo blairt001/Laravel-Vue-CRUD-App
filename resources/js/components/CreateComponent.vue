@@ -34,7 +34,7 @@
     },
     methods: {
       addPost(){
-        let uri = '/post/create';
+        let uri = '/api/post/create';
         this.axios.post(uri, this.post).then((response) => {
           this.$router.push({name: 'posts'});
         });

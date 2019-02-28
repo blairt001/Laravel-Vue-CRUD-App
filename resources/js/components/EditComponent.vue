@@ -34,14 +34,14 @@
         }
       },
       created() {
-        let uri = `/post/edit/${this.$route.params.id}`;
+        let uri = `/api/post/edit/${this.$route.params.id}`;
         this.axios.get(uri).then((response) => {
             this.post = response.data;
         });
       },
       methods: {
         updatePost() {
-          let uri = `/post/update/${this.$route.params.id}`;
+          let uri = `/api/post/update/${this.$route.params.id}`;
           this.axios.post(uri, this.post).then((response) => {
             this.$router.push({name: 'posts'});
           });
