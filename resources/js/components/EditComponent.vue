@@ -1,51 +1,75 @@
+
 <template>
-  <div>
-    <h1>Edit Quote</h1>
-    <form @submit.prevent="updatePost">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Author:</label>
-            <input type="text" class="form-control" v-model="post.title">
-          </div>
-        </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label>Quote:</label>
-              <textarea class="form-control" v-model="post.body" rows="5"></textarea>
-            </div>
-          </div>
-        </div><br />
-        <div class="form-group">
-          <button class="btn btn-primary">Update</button>
-        </div>
-    </form>
-  </div>
+<div class="container">
+<form>
+<div :class="['form-group m-1 p-3', successful ? 'alert-success' : '']">
+  <span v-if="successful" class="label label-sucess"> Quote Updated! </span>
+</div>
+
+ <div :class="['form-group m-1 p-3', error ? 'alert-danger' : '']">
+    <span v-if="errors.title" class="label label-danger"> {{ errors.title[0] }} </span>
+    <span v-if="errors.body" class="label label-danger"> {{ errors.body[0] }} </span>
+</div>
+
+
+<div class="form-group">
+  <input type="title" ref="title" class="form-control" id="title" placeholder="Enter Author Name" required>
+</div>
+
+<div class="form-group">
+  <textarea class="form-control" ref="body" id="body" placeholder="Enter Quote Body" rows="8" required></textarea>
+</div>
+  <button type="submit" @click.prevent="update" class="btn btn-primary block">Submit</button>
+</form>
+</div>
 </template>
 
-<script>
-    export default {
 
-      data() {
-        return {
-          post: {}
-        }
-      },
-      created() {
-        let uri = `/api/post/edit/${this.$route.params.id}`;
-        this.axios.get(uri).then((response) => {
-            this.post = response.data;
-        });
-      },
-      methods: {
-        updatePost() {
-          let uri = `/api/post/update/${this.$route.params.id}`;
-          this.axios.post(uri, this.post).then((response) => {
-            this.$router.push({name: 'posts'});
-          });
-        }
-      }
+<script>
+export default {
+  mounted() {
+    this.getPost();
+  },
+  props: {
+    postId: {
+      type: Number,
+      required: true
     }
+  },
+  data() {
+    return {
+      error: false,
+      successful: false,
+      errors: []
+    };
+  },
+  methods: {
+    update() {
+      let title = this.$refs.title.value;
+      let body = this.$refs.body.value;
+      axios
+        .put('/api/post/edit' + this.postId, { title, body })
+        .then(response => {
+          this.successful = true;
+          this.error = false;
+          this.errors = [];
+        })
+        .catch(error => {
+          if (!_.isEmpty(error.response)) {
+            if ((error.response.status = 422)) {
+              this.errors = error.response.data.errors;
+              this.successful = false;
+              this.error = true;
+            }
+          }
+        });
+    },
+    getPost() {
+      axios.get('/api/post/update' + this.postId).then(response => {
+        this.$refs.title.value = response.data.data.title;
+        this.$refs.body.value = response.data.data.body;
+      });
+    }
+  }
+};
 </script>

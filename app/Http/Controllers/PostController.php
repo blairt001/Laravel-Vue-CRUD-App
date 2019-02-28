@@ -10,15 +10,33 @@ class PostController extends Controller
 {
     public function store(Request $request)
     {
-      $post = new Post([
-        'title' => $request->get('title'),
-        'body' => $request->get('body')
-      ]);
+      $this->validate($request,
+            [
+            'title' => 'required',
+            'body' => 'required',
+            'image' => 'required|mimes:jpeg,png,jpg,gif,svg',
+             ]
+        );
 
-      $post->save();
+        $post = new Post();
 
-      return response()->json('successfully added');
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name = str_slug($request->title) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('/uploads/posts');
+            $imagePath = $destinationPath . "/" . $name;
+            $image->move($destinationPath, $name);
+            $post->image = $name;
+        }
+
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->save();
+
+        return new PostResource($post);
     }
+
+
 
     public function index()
     {

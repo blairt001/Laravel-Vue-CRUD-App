@@ -39,7 +39,7 @@ const routes = [
       name: 'edit',
       path: '/edit/:id',
       component: EditComponent
-  }
+  },
 ];
 
 const router = new VueRouter({ mode: 'history', routes: routes});

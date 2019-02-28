@@ -22,6 +22,7 @@
                     <td>{{ post.id }}</td>
                     <td>{{ post.title }}</td>
                     <td>{{ post.body }}</td>
+                    <td>image</td>
                     <td><router-link :to="{name: 'edit', params: { id: post.id }}" class="btn btn-primary">Edit</router-link></td>
                     <td><button class="btn btn-danger" @click = "deletePost(post.id)">Delete</button></td>
                 </tr>
