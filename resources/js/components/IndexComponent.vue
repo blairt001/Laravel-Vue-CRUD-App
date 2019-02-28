@@ -46,10 +46,27 @@
     methods: {
       deletePost(id)
       {
-        let uri = `/api/post/delete/${id}`;
-        this.axios.delete(uri).then(response => {
-          this.posts.splice(this.posts.indexOf(id), 1);
+          this.$swal({
+          title: 'Are you sure?',
+          text: 'You can\'t revert your action',
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes Delete it!',
+          cancelButtonText: 'No, Keep it!',
+          cancelButtonColor: '#d33',
+          showCloseButton: true,
+          showLoaderOnConfirm: true
+        }).then((result) => {
+          if(result.value) {
+              let uri = `/api/post/delete/${id}`;
+              this.axios.delete(uri).then(response => {
+              this.posts.splice(this.posts.indexOf(id), 1);
         });
+            this.$swal('Deleted', 'You successfully deleted this file', 'success')
+          } else {
+            this.$swal('Cancelled', 'Your file is still intact', 'info')
+          }
+        })
       }
     }
   }

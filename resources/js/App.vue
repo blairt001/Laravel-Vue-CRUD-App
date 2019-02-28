@@ -9,7 +9,7 @@
           <router-link to="/create" class="nav-link">Create Quote</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/posts" class="nav-link">Quote</router-link>
+          <router-link to="/posts" class="nav-link">Quotes</router-link>
         </li>
       </ul>
     </nav><br />
